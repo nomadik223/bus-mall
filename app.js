@@ -37,3 +37,20 @@ function callProducts() {
 };
 callProducts();
 console.log(itemArray);
+
+function randomThreeNum() {
+  var one = getRandomIntInclusive();
+  var two = getRandomIntInclusive();
+  var three = getRandomIntInclusive();
+  while (one === three || one === two || two === three){
+    console.log('dupe');
+    if (one === two) {
+      two = itemArray[getRandomIntInclusive()].path;
+    };
+    if (three === two || three === one) {
+      three = itemArray[getRandomIntInclusive()].path;
+      console.log('duplicate image prevented');
+    };
+  };
+  return [one, two, three];
+};
