@@ -4,8 +4,6 @@
 function Product(name, path) {
   this.name = name;
   this.path = path;
-  this.tally = 0;
-  this.click = 0;
 };
 
 //array for images later
@@ -18,6 +16,7 @@ function getRandomIntInclusive() {
 
 //create new onject including each image and pushing it in to an array.
 function callProducts() {
+  itemArray.push(new Product('wine-glass', 'img/wine-glass.jpg'));
   itemArray.push(new Product('bag', 'img/bag.jpg'));
   itemArray.push(new Product('banana', 'img/banana.jpg'));
   itemArray.push(new Product('bathroom', 'img/bathroom.jpg'));
@@ -35,9 +34,8 @@ function callProducts() {
   itemArray.push(new Product('sweep', 'img/sweep.png'));
   itemArray.push(new Product('tauntaun', 'img/tauntaun.jpg'));
   itemArray.push(new Product('unicorn', 'img/unicorn.jpg'));
-  itemArray.push(new Product('usb', 'img/usb.jpg'));
+  itemArray.push(new Product('usb', 'img/usb.gif'));
   itemArray.push(new Product('water-can', 'img/water-can.jpg'));
-  itemArray.push(new Product('wine-glass', 'img/wine-glass.jpg'));
 };
 callProducts();
 console.log(itemArray);
@@ -64,14 +62,18 @@ function randomThreeNum() {
 function makeImages() {
   var threeNums = randomThreeNum();
   var left = document.getElementById('left');
+  console.log(itemArray[threeNums[0]]);
   left.src = itemArray[threeNums[0]].path;
   console.log(threeNums[0]);
   var middle = document.getElementById('middle');
+  console.log(itemArray[threeNums[1]]);
   middle.src = itemArray[threeNums[1]].path;
   console.log(threeNums[1]);
   var right = document.getElementById('right');
+  console.log(itemArray[threeNums[2]]);
   right.src = itemArray[threeNums[2]].path;
   console.log(threeNums[2]);
+  console.log('BREAK SET');
 };
 makeImages();
 
