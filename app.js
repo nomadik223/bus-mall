@@ -1,5 +1,6 @@
 'use strict';
 
+//function to create objects. Will be used for images later.
 function Product(name, path) {
   this.name = name;
   this.path = path;
@@ -7,12 +8,15 @@ function Product(name, path) {
   this.click = 0;
 };
 
+//array for images later
 var itemArray = [];
 
+//function to get a random number. For use later.
 function getRandomIntInclusive() {
   return Math.floor(Math.random() * (itemArray.length) - 1);
 }
 
+//create new onject including each image and pushing it in to an array.
 function callProducts() {
   itemArray.push(new Product('bag', 'img/bag.jpg'));
   itemArray.push(new Product('banana', 'img/banana.jpg'));
@@ -38,12 +42,13 @@ function callProducts() {
 callProducts();
 console.log(itemArray);
 
+//function to select 3 random images and re-roll if a duplicate is found.
 function randomThreeNum() {
   var one = getRandomIntInclusive();
   var two = getRandomIntInclusive();
   var three = getRandomIntInclusive();
   while (one === three || one === two || two === three){
-    console.log('dupe');
+    console.log('duplicate image detected');
     if (one === two) {
       two = itemArray[getRandomIntInclusive()].path;
     };
@@ -54,3 +59,39 @@ function randomThreeNum() {
   };
   return [one, two, three];
 };
+
+//Function to add the selected images in to the page.
+function makeImages() {
+  var threeNums = randomThreeNum();
+  var left = document.getElementById('left');
+  left.src = itemArray[threeNums[0]].path;
+  console.log(threeNums[0]);
+  var middle = document.getElementById('middle');
+  middle.src = itemArray[threeNums[1]].path;
+  console.log(threeNums[1]);
+  var right = document.getElementById('right');
+  right.src = itemArray[threeNums[2]].path;
+  console.log(threeNums[2]);
+};
+makeImages();
+
+//setting up an event
+var theContainer = document.getElementById('container');
+theContainer.addEventListener('click', handleContainer);
+
+//setting variable to track click
+var click = 0;
+
+//Function to cycle through and track number of clicks until 25 clicks is reached.
+function handleContainer(event){
+  console.log(event.target.id);
+  if (event.target.id === 'container') {
+    alert('You cannot follow instructions to click directly on a contained element. Please do so!');
+  } else if (click < 25) {
+    click++;
+    console.log(click);
+    makeImages();
+  } else if (click = 25) {
+    theContainer.removeEventListener('click', handleContainer);
+  }
+}
