@@ -11,7 +11,9 @@ var itemArray = [];
 
 //function to get a random number. For use later.
 function getRandomIntInclusive() {
-  return Math.floor(Math.random() * (itemArray.length) - 1);
+  var testNum = Math.floor(Math.random() * (itemArray.length));
+  console.log(testNum + ' random number generated');
+  return testNum;
 }
 
 //create new onject including each image and pushing it in to an array.
@@ -47,12 +49,13 @@ function randomThreeNum() {
   var three = getRandomIntInclusive();
   while (one === three || one === two || two === three){
     console.log('duplicate image detected');
-    if (one === two) {
-      two = itemArray[getRandomIntInclusive()].path;
+    while (one === two) {
+      two = getRandomIntInclusive();
+      console.log('preventing duplicate image');
     };
-    if (three === two || three === one) {
-      three = itemArray[getRandomIntInclusive()].path;
-      console.log('duplicate image prevented');
+    while (three === two || three === one) {
+      three = getRandomIntInclusive();
+      console.log('preventing duplicate image');
     };
   };
   return [one, two, three];
