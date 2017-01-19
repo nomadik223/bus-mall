@@ -100,3 +100,42 @@ function handleContainer(event){
     theContainer.removeEventListener('click', handleContainer);
   }
 }
+
+function showChart() {
+  document.getElementById('button').hidden = false;
+}
+
+function displayTable(event) {
+  var barData = {
+    labels : names(),
+    datasets : [
+      {
+        backgroundColor: '#48A497',
+        data : tableData(),
+      },
+    ]
+  };
+  var barGraph = document.getElementById('barGraph').getContext('2d');
+  new Chart.Bar(barGraph, {
+    data: barData,
+  });
+}
+
+var theButton = document.getElementById('button');
+theButton.addEventListener('click', displayTable);
+
+var names = function() {
+  var labels = [];
+  for(var i = 0; i < itemArray.length; i++) {
+    labels[i] = itemArray[i].name;
+  }
+  return labels;
+};
+
+var tableData = function() {
+  var data = [];
+  for(var i = 0; i < itemArray.length; i++) {
+    data[i] = itemArray[i].click;
+  }
+  return data;
+};
