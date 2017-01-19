@@ -1,30 +1,28 @@
 'use strict';
 
-//function to create objects. Will be used for images later.
 function Product(name, path) {
   this.name = name;
   this.path = path;
   this.tally = 0;
+  this.click = 0;
 };
 
-//array for images later
 var itemArray = [];
+var left = document.getElementById('left');
+var middle = document.getElementById('middle');
+var right = document.getElementById('right');
+var currentNums = [];
+document.getElementById('button').hidden = true;
+// function updateChartArray() {
+//   for (var i = 0; i < ; i++)
+//
+// };
 
-//variables to track clicks
-var leftNum = 0;
-var middleNum = 0;
-var rightNum = 0;
-
-//function to get a random number. For use later.
 function getRandomIntInclusive() {
-  var testNum = Math.floor(Math.random() * (itemArray.length));
-  console.log(testNum + ' random number generated');
-  return testNum;
-}
+  return Math.floor(Math.random() * (itemArray.length));
+};
 
-//create new onject including each image and pushing it in to an array.
 function callProducts() {
-  itemArray.push(new Product('wine-glass', 'img/wine-glass.jpg'));
   itemArray.push(new Product('bag', 'img/bag.jpg'));
   itemArray.push(new Product('banana', 'img/banana.jpg'));
   itemArray.push(new Product('bathroom', 'img/bathroom.jpg'));
@@ -44,103 +42,73 @@ function callProducts() {
   itemArray.push(new Product('unicorn', 'img/unicorn.jpg'));
   itemArray.push(new Product('usb', 'img/usb.gif'));
   itemArray.push(new Product('water-can', 'img/water-can.jpg'));
+  itemArray.push(new Product('wine-glass', 'img/wine-glass.jpg'));
 };
 callProducts();
 console.log(itemArray);
 
-//function to select 3 random images and re-roll if a duplicate is found.
 function randomThreeNum() {
   var one = getRandomIntInclusive();
   var two = getRandomIntInclusive();
   var three = getRandomIntInclusive();
-  while (one === three || one === two || two === three){
-    console.log('duplicate image detected');
-    while (one === two) {
-      two = getRandomIntInclusive();
-      console.log('preventing duplicate image');
-    };
-    while (three === two || three === one) {
-      three = getRandomIntInclusive();
-      console.log('preventing duplicate image');
-    };
-  };
-  return [one, two, three];
+  console.log(currentNums);
+  while (one === currentNums[0] || one === currentNums[1] || one === currentNums[2]) {
+    one = getRandomIntInclusive();
+    console.log('one hit previous');
+  }
+  while (two === currentNums[0] || two === currentNums[1] || two === currentNums[2] || one === two) {
+    two = getRandomIntInclusive();
+    console.log('two hit previous');
+  }
+  while (three === currentNums[0] || three === currentNums[1] || three === currentNums[2] || one === three || two === three) {
+    three = getRandomIntInclusive();
+    console.log('three hit previous');
+  }
+  currentNums = [one, two, three];
+  // console.log(currentNums);
+  return currentNums;
 };
 
-//Function to add the selected images in to the page.
 function makeImages() {
   var threeNums = randomThreeNum();
-  var left = document.getElementById('left');
-  console.log(itemArray[threeNums[0]]);
   left.src = itemArray[threeNums[0]].path;
-  leftNum = threeNums[0];
+  left.alt = itemArray[threeNums[0]].name;
+  itemArray[threeNums[0]].tally += 1;
   console.log(threeNums[0]);
-  var middle = document.getElementById('middle');
-  console.log(itemArray[threeNums[1]]);
   middle.src = itemArray[threeNums[1]].path;
-  middleNum = threeNums[1];
+  middle.alt = itemArray[threeNums[1]].name;
+  itemArray[threeNums[1]].tally += 1;
   console.log(threeNums[1]);
-  var right = document.getElementById('right');
-  console.log(itemArray[threeNums[2]]);
   right.src = itemArray[threeNums[2]].path;
-  rightNum = threeNums[2];
+  right.alt = itemArray[threeNums[2]].name;
+  itemArray[threeNums[2]].tally += 1;
   console.log(threeNums[2]);
-  console.log('BREAK SET');
-
-  // if (event.target.id == 'left'){
-  //   itemArray[threeNums[0]].tally;
-  //   console.log(itemArray[threeNums[0]].tally);
-  // }
 };
 makeImages();
 
-//setting up an event
 var theContainer = document.getElementById('container');
 theContainer.addEventListener('click', handleContainer);
 
-//setting variable to track click
 var click = 0;
 
-//Function to cycle through and track number of clicks until 25 clicks is reached.
 function handleContainer(event){
-  console.log(event.target.id);
-  console.log(leftNum, middleNum, rightNum);
-  if (event.target.id === 'container') {
+  console.log(event.target.alt);
+  if (event.target.alt === 'container') {
     alert('You cannot follow instructions to click directly on a contained element. Please do so!');
   } else if (click < 25) {
-    if (event.target.id == 'left'){
-      itemArray[leftNum].tally++;
-      console.log(itemArray[leftNum].tally + ' tally');
-    } else if (event.target.id == 'middle') {
-      itemArray[middleNum].tally++;
-      console.log(itemArray[middleNum].tally + ' tally');
-    } else if (event.target.id == 'right') {
-      itemArray[rightNum].tally++;
-      console.log(itemArray[rightNum].tally + ' tally');
-    }
     click++;
     console.log(click);
     makeImages();
-  } else if (click = 5) {
+  } else if (click = 25) {
     theContainer.removeEventListener('click', handleContainer);
-    endingTally();
-    removeImg();
+    showChart();
   }
-}
-
-function removeImg(){
-  var removeEl = document.getElementById('container');
-  removeEl.parentElement.removeChild(removeEl);
-}
-
-var documentWrite = document.getElementById('results');
-function endingTally(){
-  for (var i = 0; i < itemArray.length; i++){
-    var documentChild = document.createElement('li');
-    documentChild.textContent = (itemArray[i].name + ' was picked ' + itemArray[i].tally + ' times');
-    documentWrite.appendChild(documentChild);
+  for(var i = 0; i < itemArray.length; i++) {
+    if(event.target.alt === itemArray[i].name)
+      itemArray[i].click += 1;
+    // console.log(itemArray[i].name + ' has ' + itemArray[i].clicks + ' clicks.');
   }
-}
+};
 
 function showChart() {
   document.getElementById('button').hidden = false;
