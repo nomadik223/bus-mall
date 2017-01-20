@@ -7,15 +7,19 @@
 	vertical-align: baseline;
 }
 
+h1 {
+	color: #3DA9A9;
+}
+
 body {
-  background-color: #717174;
+  background-color: white;
   color: #fff;
 	font-family: 'Amaranth', sans-serif;
 	font-size: 150%;
 }
 
 header {
-  background-color: #3DA9A9;
+  background-color: blue;
   height: 100px;
 }
 
